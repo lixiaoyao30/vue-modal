@@ -2,60 +2,68 @@
 <html>
 
 <head>
-<meta charset="utf-8"> 
-<title>Vue</title>
+    <meta charset="utf-8">
+    <title>Vue</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" href="bootstrap.min.css">
     <script src="jquery.js"></script>
     <script src="bootstrap.js"></script>
-  <script src="vue.js"></script>
+    <script src="vue.js"></script>
 </head>
 
-<!--[if lt IE9]> 
+<!--[if lt IE9]>
 <script src="http://cdn.static.runoob.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
 <![endif]-->
 <style></style>
 <script>
 
-  window.onload=function(){
-   new Vue({
-         el:'#box',
-         data:{
-             myData:[],
-             username:"width",
-             age:12,
-             'newIndex':-100
-         },
-         methods:{
-             add:function(){
-                 this.myData.push({
-                    'name':this.username,
-                     'age':this.age,
+    window.onload=function(){
 
 
-                 });
-                 this.username="";
-                 this.age="";
-             },
-             deleteMsg:function(n){
-                 if(n==-2){
-                     this.myData=[];
-                 }else{
-                     this.myData.splice(n,1);
-                 }
+        new Vue({
+            el:'#box',
+            data:{
+                myData:[],
+                username:"width",
+                age:12,
+                'newIndex':-100
+            },
+            methods:{
+                add:function(){
+                    this.myData.push({
+                        'name':this.username,
+                        'age':this.age,
 
-      },
+
+                    });
+                    this.username="";
+                    this.age="";
+                },
+                deleteMsg:function(n){
+                    if(n==-2){
+                        this.myData=[];
+                    }else{
+                        this.myData.splice(n,1);
+                    }
+
+                },
 
 
-         }
-     })
-  }
+            }
+        })
+    }
+    $(document).on("click", ".delete,#deleteAll", function () {
 
+        var myBookTitle = $(this).data('title');
+        var myBookContent= $(this).data('content');
+        $(".modal-title").html(myBookTitle);
+        $(".modal-body").html(myBookContent);
+    });
 </script>
 <body style="padding: 20px;">
-   <div class="container" id="box">
+<div class="container" id="box">
     <form role="form" class="form-horizontal">
         <div class="form-group">
             <label  class="col-sm-2 control-label" for="name">username：</label>
@@ -66,71 +74,71 @@
         <div class="form-group">
             <label  class="col-sm-2 control-label" for="age">age：</label>
             <div class="col-sm-5">
-            <input type="text" id="age" v-model="age" class="form-control" placeholder = "please input your age"/>
+                <input type="text" id="age" v-model="age" class="form-control" placeholder = "please input your age"/>
             </div>
         </div>
         <div class="form-group">
-          <div class="col-sm-5 col-sm-offset-2">
-            <input type="button" value="add" v-on:click="add();" class="btn btn-primary"/>
-            <input type="reset" value="reset" class="btn btn-danger"/>
-          </div>
+            <div class="col-sm-5 col-sm-offset-2">
+                <input type="button" value="add" v-on:click="add();" class="btn btn-primary"/>
+                <input type="reset" value="reset" class="btn btn-danger"/>
+            </div>
         </div>
     </form>
     <hr>
-       <table class="table table-bordered table-hover">
-           <caption class="h2 text-info">Information</caption>
-           <tr class="text-danger">
-               <th class="text-center">S/N</th>
-               <th class="text-center">Name</th>
-               <th class="text-center">Age</th>
-               <th class="text-center">Operate</th>
-           </tr>
-           <tr class="text-center" v-for="item in myData">
-               <td>{{$index+1}}</td>
-               <td>{{item.name}}</td>
-               <td>{{item.age}}</td>
-               <td>
-                   <button class="btn btn-primary btn-sm" v-on:click="newIndex=$index"   data-toggle="modal" href="#layer">delete</button>
-               </td>
-           </tr>
+    <table class="table table-bordered table-hover">
+        <caption class="h2 text-info">Information</caption>
+        <tr class="text-danger">
+            <th class="text-center">S/N</th>
+            <th class="text-center">Name</th>
+            <th class="text-center">Age</th>
+            <th class="text-center">Operate</th>
+        </tr>
+        <tr class="text-center" v-for="item in myData">
+            <td>{{$index+1}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.age}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm delete"  data-content="delete ({{item.name}}) data" data-title="are you sure to delete this single data？" v-on:click="newIndex=$index"   data-toggle="modal" href="#layer">delete</button>
+            </td>
+        </tr>
 
-           <tr v-show="myData.length!=0">
-               <td colspan="4" class="text-right">
-                   <button class="btn btn-danger btn-sm" v-on:click="newIndex=-2" data-toggle="modal" data-target="#layer" >delete all</button>
-               </td>
-           </tr>
-           <tr v-show="myData.length==0">
-               <td colspan="4" class="text-center text-muted">
-                   <p>No data...</p>
-               </td>
-           </tr>
-       </table>
+        <tr v-show="myData.length!=0">
+            <td colspan="4" class="text-right">
+                <button class="btn btn-danger btn-sm "  data-content="delete all data"data-title="are you sure to delete all the data？"v-on:click="newIndex=-2" data-toggle="modal" data-target="#layer" id="deleteAll" >delete all</button>
+            </td>
+        </tr>
+        <tr v-show="myData.length==0">
+            <td colspan="4" class="text-center text-muted">
+                <p>No data...</p>
+            </td>
+        </tr>
+    </table>
     <!--弹出框 -->
-       <div role="dialog" class="modal fade" id="layer"  >
-           <div class="modal-dialog">
-               <div class="modal-content">
-                   <div class="modal-header">
-                       <button type="button" class="close" data-dismiss="modal">
-                           &times;
-                       </button>
-                       <h4 class="modal-title" >
-                           are you sure to delete？
-                       </h4>
-                   </div>
-                   <div class="modal-body">
-                       will delete this information
-                   </div>
-                   <div class="modal-footer text-right">
-                       <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">cancel
-                       </button>
-                       <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="deleteMsg(newIndex);">
-                         ok
-                       </button>
-                   </div>
+    <div role="dialog" class="modal fade" id="layer"  >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" >
 
-       </div>
+                    </h4>
+                </div>
+                <div class="modal-body">
 
-   </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="deleteMsg(newIndex);">
+                        ok
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
 
 </body>
 
